@@ -2,39 +2,35 @@ package com.example.employeepayrollapp.service;
 
 import com.example.employeepayrollapp.dto.EmployeeDTO;
 import com.example.employeepayrollapp.model.EmployeePayrollData;
+import com.example.employeepayrollapp.repository.EmployeePayrollRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EmployeePayrollService implements IEmployeePayrollService {
 
-    private List<EmployeePayrollData> employeeList = new ArrayList<>();
-    private int empIdCounter = 1;
+    @Autowired
+    private EmployeePayrollRepository repository;
 
     @Override
     public List<EmployeePayrollData> getAllEmployees() {
-        return employeeList;
+        return repository.findAll();
     }
 
     @Override
     public EmployeePayrollData getEmployeeById(int id) {
-        return employeeList.stream()
-                .filter(emp -> emp.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public EmployeePayrollData createEmployee(EmployeeDTO dto) {
         EmployeePayrollData emp = new EmployeePayrollData(
-                empIdCounter++,
                 dto.name,
                 dto.salary
         );
-        employeeList.add(emp);
-        return emp;
+        return repository.save(emp);
     }
 
     @Override
@@ -43,12 +39,13 @@ public class EmployeePayrollService implements IEmployeePayrollService {
         if (emp != null) {
             emp.setName(dto.name);
             emp.setSalary(dto.salary);
+            return repository.save(emp);
         }
-        return emp;
+        return null;
     }
 
     @Override
     public void deleteEmployee(int id) {
-        employeeList.removeIf(emp -> emp.getId() == id);
+        repository.deleteById(id);
     }
 }
