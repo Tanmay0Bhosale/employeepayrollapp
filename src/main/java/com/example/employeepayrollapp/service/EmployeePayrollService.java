@@ -1,6 +1,7 @@
 package com.example.employeepayrollapp.service;
 
 import com.example.employeepayrollapp.dto.EmployeeDTO;
+import com.example.employeepayrollapp.exception.EmployeeNotFoundException;
 import com.example.employeepayrollapp.model.EmployeePayrollData;
 import com.example.employeepayrollapp.repository.EmployeePayrollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ public class EmployeePayrollService implements IEmployeePayrollService {
 
     @Override
     public EmployeePayrollData getEmployeeById(int id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() ->
+                        new EmployeeNotFoundException("Employee not found with id: " + id)
+                );
     }
 
     @Override
