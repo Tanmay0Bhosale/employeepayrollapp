@@ -5,6 +5,8 @@ import com.example.employeepayrollapp.model.EmployeePayrollData;
 import com.example.employeepayrollapp.service.IEmployeePayrollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class EmployeePayrollController {
     }
 
     @PostMapping("/create")
-    public EmployeePayrollData create(@RequestBody EmployeeDTO dto) {
+    public EmployeePayrollData create(@Valid @RequestBody EmployeeDTO dto) {
         return service.createEmployee(dto);
     }
 
@@ -41,4 +43,6 @@ public class EmployeePayrollController {
         service.deleteEmployee(id);
         return "Deleted Successfully";
     }
+
+
 }
