@@ -1,10 +1,19 @@
 package com.example.employeepayrollapp.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "employee_payroll")
 public class EmployeePayrollData {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
     private double salary;
+
+    public EmployeePayrollData() {}
 
     public EmployeePayrollData(int id, String name, double salary) {
         this.id = id;
@@ -12,10 +21,21 @@ public class EmployeePayrollData {
         this.salary = salary;
     }
 
+    public EmployeePayrollData(String name, double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    // Getters & Setters
     public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+
     public String getName() { return name; }
-    public double getSalary() { return salary; }
 
     public void setName(String name) { this.name = name; }
+
+    public double getSalary() { return salary; }
+
     public void setSalary(double salary) { this.salary = salary; }
 }
